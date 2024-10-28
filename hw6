@@ -1,0 +1,70 @@
+using System;
+
+// Абстрактный класс устройства хранения данных
+public abstract class StorageDevice
+{
+    // Свойство для ёмкости (в гигабайтах)
+    public int Capacity { get; set; }
+
+    // Конструктор для инициализации ёмкости
+    public StorageDevice(int capacity)
+    {
+        Capacity = capacity;
+    }
+
+    // Абстрактный метод для сохранения данных
+    public abstract void StoreData();
+}
+
+// Класс жёсткого диска
+public class HardDrive : StorageDevice
+{
+    // Свойство для скорости записи (в мегабайтах в секунду)
+    public int WriteSpeed { get; set; }
+
+    // Конструктор для инициализации ёмкости и скорости записи
+    public HardDrive(int capacity, int writeSpeed) : base(capacity)
+    {
+        WriteSpeed = writeSpeed;
+    }
+
+    // Переопределение метода StoreData
+    public override void StoreData()
+    {
+        Console.WriteLine($"Сохранение данных на жёсткий диск с ёмкостью {Capacity} ГБ и скоростью записи {WriteSpeed} МБ/с.");
+    }
+}
+
+// Класс флеш-накопителя
+public class FlashDrive : StorageDevice
+{
+    // Свойство для типа USB
+    public string UsbType { get; set; }
+
+    // Конструктор для инициализации ёмкости и типа USB
+    public FlashDrive(int capacity, string usbType) : base(capacity)
+    {
+        UsbType = usbType;
+    }
+
+    // Переопределение метода StoreData
+    public override void StoreData()
+    {
+        Console.WriteLine($"Сохранение данных на флеш-накопитель с ёмкостью {Capacity} ГБ и интерфейсом {UsbType}.");
+    }
+}
+
+// Пример использования классов
+public class Program
+{
+    public static void Main()
+    {
+        // Создаем объект жёсткого диска и вызываем метод StoreData
+        StorageDevice hardDrive = new HardDrive(1024, 150);
+        hardDrive.StoreData();
+
+        // Создаем объект флеш-накопителя и вызываем метод StoreData
+        StorageDevice flashDrive = new FlashDrive(64, "USB 3.0");
+        flashDrive.StoreData();
+    }
+}
