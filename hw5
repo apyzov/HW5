@@ -1,0 +1,82 @@
+using System;
+
+public class BankAccount
+{
+    // Свойства
+    public string AccountNumber { get; private set; }
+    public decimal Balance { get; private set; }
+    public string Owner { get; private set; }
+
+    // Конструктор
+    public BankAccount(string accountNumber, string owner)
+    {
+        AccountNumber = accountNumber;
+        Owner = owner;
+        Balance = 0m; // Баланс по умолчанию
+    }
+
+    // Метод пополнения баланса
+    public void Deposit(decimal amount)
+    {
+        if (amount > 0)
+        {
+            Balance += amount;
+            Console.WriteLine($"{amount} было зачислено на ваш счет.");
+        }
+        else
+        {
+            Console.WriteLine("Сумма для пополнения должна быть положительной.");
+        }
+    }
+
+    // Метод снятия средств
+    public void Withdraw(decimal amount)
+    {
+        if (amount > 0 && amount <= Balance)
+        {
+            Balance -= amount;
+            Console.WriteLine($"{amount} было снято со счета.");
+        }
+        else
+        {
+            Console.WriteLine("Недостаточно средств или неверная сумма.");
+        }
+    }
+
+    // Метод для получения информации о счете
+    public string GetAccountInfo()
+    {
+        return $"Счет: {AccountNumber}, Владелец: {Owner}, Баланс: {Balance}";
+    }
+
+    // Метод перевода средств на другой счет
+    public void Transfer(BankAccount targetAccount, decimal amount)
+    {
+        if (amount > 0 && amount <= Balance)
+        {
+            Withdraw(amount); // Снятие средств с текущего счета
+            targetAccount.Deposit(amount); // Пополнение целевого счета
+            Console.WriteLine($"{amount} было переведено на счет {targetAccount.AccountNumber}");
+        }
+        else
+        {
+            Console.WriteLine("Недостаточно средств для перевода или неверная сумма.");
+        }
+    }
+}
+
+// Пример использования
+public class Program
+{
+    public static void Main()
+    {
+        BankAccount account1 = new BankAccount("12345", "Али");
+        BankAccount account2 = new BankAccount("67890", "Болат");
+
+        account1.Deposit(500); // Пополняем счет Али
+        Console.WriteLine(account1.GetAccountInfo()); // Вывод информации о счете Али
+
+        account1.Transfer(account2, 200); // Переводим 200 со счета Али на счет Болата
+        Console.WriteLine(account2.GetAccountInfo()); // Вывод информации о счете Болата
+    }
+}
